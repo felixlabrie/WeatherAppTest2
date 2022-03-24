@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 String requestUrl = R.string.url + binding.editCity.getText().toString() + R.string.APIKey;
-                JsonObjectRequest
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, )
             }
 
         });
