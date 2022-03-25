@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     RequestQueue queue;
-    private String apiKey="&appid=49300a7196dfb9fc473da69381a662e2";
+    private String apiKey="&appid=49300a7196dfb9fc473da69381a662e2&units=metric";
     private String url = "https://api.openweathermap.org/data/2.5/weather?q=";
 
     @Override
@@ -42,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 String requestUrl = url + binding.editCity.getText().toString() + apiKey;
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null, response -> {
                     try {
-                        String weatherData = response.getString("coord");
+                        String weatherData = "City name: " + response.getString("name") + "\n" +
+                                "Country: " + response.getJSONObject("sys").getString("country") + "\n" +
+                                "Weather description: " + response.getJSONArray("weather").getJSONObject(0).getString("description") +
+                                "\nTemperature (Celsius): " + response.getJSONObject("main").getString("temp")
+                                ;
                         binding.weatherDataContainer.setText(weatherData);
                     }
                     catch (JSONException e){
