@@ -13,16 +13,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.labrie.weatherapptest2.databinding.ActivityMainBinding;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     RequestQueue queue;
+    private String apiKey="&appid=49300a7196dfb9fc473da69381a662e2";
+    private String url = "https://api.openweathermap.org/data/2.5/weather?q=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +39,17 @@ public class MainActivity extends AppCompatActivity {
                 binding.weatherDataContainer.setText("Invalid entry. Enter a valid city name");
             }
             else {
-                String requestUrl = R.string.url + binding.editCity.getText().toString() + R.string.APIKey;
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, )
+                String requestUrl = url + binding.editCity.getText().toString() + apiKey;
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null, response -> {
+                    try {
+                        String weatherData = response.getString("coord");
+                        binding.weatherDataContainer.setText(weatherData);
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }, error -> Log.d("Request", "onClick: request error"));
+                queue.add(jsonObjectRequest);
             }
 
         });
